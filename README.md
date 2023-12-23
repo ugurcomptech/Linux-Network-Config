@@ -83,12 +83,44 @@ ugur@ugur:~$ systemctl status NetworkManager
      CGroup: /system.slice/NetworkManager.service
 ```
 
-NetworkManagerin CLİ arayüzü de vardır örnek olarak aşağıda ki komutu çalıştırabilirsiniz
+NetworkManagerin CLI arayüzü de vardır örnek olarak aşağıda ki komutu çalıştırabilirsiniz
 
 ```
 ugur@ugur:~$ nmcli device status
 DEVICE  TYPE      STATE      CONNECTION 
 ens33   ethernet  unmanaged  --         
 lo      loopback  unmanaged  --
+```
+
+
+Eğer Wireless yani kablosuzdan bağlıysanız aşağıda ki paketi indirebilirsiniz
+
+```
+ugur@ugur:~$ sudo apt install wireless-tools
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following NEW packages will be installed:
+  wireless-tools
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 113 kB of archives.
+After this operation, 304 kB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian bullseye/main amd64 wireless-tools amd64 30~pre9-13.1 [113 kB]
+Fetched 113 kB in 1s (225 kB/s)        
+Selecting previously unselected package wireless-tools.
+(Reading database ... 292670 files and directories currently installed.)
+Preparing to unpack .../wireless-tools_30~pre9-13.1_amd64.deb ...
+Unpacking wireless-tools (30~pre9-13.1) ...
+Setting up wireless-tools (30~pre9-13.1) ...
+Processing triggers for man-db (2.9.4-2) ...
+```
+
+Aşağıda ki komutu yazarak da görebilirsiniz.
+
+```
+ugur@ugur:~$ sudo iwconfig
+lo        no wireless extensions.
+
+ens33     no wireless extensions.
 ```
 
