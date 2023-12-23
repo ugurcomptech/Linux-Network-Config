@@ -46,3 +46,49 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
         TX packets 35  bytes 3569 (3.4 KiB)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ```
+
+ `ip r` komutu default gatewayi ve IP adresini görmeye yarayan bir komuttur.
+
+```
+ugur@ugur:~$ ip r
+default via 192.168.1.1 dev ens33 onlink 
+192.168.1.0/24 dev ens33 proto kernel scope link src 192.168.1.170 
+```
+
+## Network Manager
+
+Network Manageri kullanmak için aşağıda ki komut ile bunu indiriyoruz.
+
+```
+ugur@ugur:~$ sudo apt install network-manager
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+network-manager is already the newest version (1.30.6-1+deb11u1).
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+```
+
+` systemctl status NetworkManager` yazarak da görüntüleyebilirsiniz.
+
+```
+ugur@ugur:~$ systemctl status NetworkManager
+● NetworkManager.service - Network Manager
+     Loaded: loaded (/lib/systemd/system/NetworkManager.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sat 2023-12-23 05:31:12 EST; 13min ago
+       Docs: man:NetworkManager(8)
+   Main PID: 570 (NetworkManager)
+      Tasks: 3 (limit: 5317)
+     Memory: 14.6M
+        CPU: 299ms
+     CGroup: /system.slice/NetworkManager.service
+```
+
+NetworkManagerin CLİ arayüzü de vardır örnek olarak aşağıda ki komutu çalıştırabilirsiniz
+
+```
+ugur@ugur:~$ nmcli device status
+DEVICE  TYPE      STATE      CONNECTION 
+ens33   ethernet  unmanaged  --         
+lo      loopback  unmanaged  --
+```
+
