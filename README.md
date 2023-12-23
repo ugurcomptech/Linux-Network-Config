@@ -153,15 +153,13 @@ Siz de içi boş şekilde gelecek alt satıra gelip aşağıda ki komutları yaz
 # ens33
 auto ens33  # Ağ arabirimi otomatik olarak etkinleştirilir
 iface ens33 inet static  # Arayüz, statik IP yapılandırması kullanacak şekilde ayarlanır
-    address 192.168.1.170  # Arayüzün IP adresi
+    address 192.168.1.175  # Arayüzün IP adresi
     netmask 255.255.255.0  # Alt ağ maskesi
     gateway 192.168.1.1  # Varsayılan Ağ Geçidi
     dns-nameservers 8.8.8.8  # DNS Sunucuları
 ```
 
-Bunu yaptıktan sorna terminalde 
-
-şu iki komuttan birini çalıştırabilirsiniz
+Bunu yaptıktan sorna terminalde aşağıdaki iki komuttan birini çalıştırabilirsiniz
 
 ```
 sudo ifdown ens33 && sudo ifup ens33
@@ -171,8 +169,56 @@ sudo ifdown ens33 && sudo ifup ens33
 sudo systemctl restart networking.service # bunu kullanmanız önerilir
 ```
 
+Terminale `sudo ifconfig ens33` komutu yazarak görebilirsiniz
+
+```
+ugur@ugur:~$ sudo ifconfig ens33
+ens33: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.1.175  netmask 255.255.255.0  broadcast 192.168.1.255
+        inet6 fe80::20c:29ff:fe89:8f42  prefixlen 64  scopeid 0x20<link>
+        ether 00:0c:29:89:8f:42  txqueuelen 1000  (Ethernet)
+        RX packets 2981  bytes 1068647 (1.0 MiB)
+        RX errors 0  dropped 148  overruns 0  frame 0
+        TX packets 302  bytes 34556 (33.7 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+```
 
 
+Şimdi bunu DHCP den alacak şekilde yapalım. Tekrardan terminale `sudo nano /etc/network/interfaces` yazarak dosyamızı açıyoruz. Static yazan kısımı `dchp` ile değiştirip diğer satırlarıda yorum satırı olarak ayarlıyoruz ve değişiklikleri kaydedip çıkıyoruz.
+
+```
+# ens33
+auto ens33  # Ağ arabirimi otomatik olarak etkinleştirilir
+iface ens33 inet dhcp 
+#    address 192.168.1.175  
+#    netmask 255.255.255.0  
+#    gateway 192.168.1.1  
+#    dns-nameservers 8.8.8.8  
+```
+
+Tekrardan aşağıda ki komutu kullanabilirsiniz
+
+```
+sudo ifdown ens33 && sudo ifup ens33
+```
+
+Bu komut DHCP seçeneğini aktif etmek istediğinizde daha çok işe yarayacaktır.
+
+Terminale `ip a show ens33` yazarsanız dinamik bir şekilde IP aldığını göreceksiniz.
+
+```
+ugur@ugur:~$ ip a show ens33
+2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 00:0c:29:89:8f:42 brd ff:ff:ff:ff:ff:ff
+    altname enp2s1
+    inet 192.168.1.109/24 brd 192.168.1.255 scope global dynamic ens33 ## Dinamik olarak aldığı burada yazıyor
+       valid_lft 3539sec preferred_lft 3539sec
+    inet6 fe80::20c:29ff:fe89:8f42/64 scope link 
+       valid_lft forever preferred_lft forever
+```
+
+
+### Okuduğunuz İçin Teşekkürler
 
 
 
