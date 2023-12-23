@@ -124,3 +124,60 @@ lo        no wireless extensions.
 ens33     no wireless extensions.
 ```
 
+
+## Linux IP Yapılandırmaları
+
+Şuan ki IP adresimiz **192.168.1.170** olarak gözükmektedir. Bu benim tarafımdan verilmiş static bir IP adresidir. Şimdi bunu nasıl düzenleyebileceğimizi görelim.
+
+```
+ugur@ugur:~$ sudo ifconfig ens33
+ens33: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.1.170  netmask 255.255.255.0  broadcast 192.168.1.255
+        inet6 fe80::20c:29ff:fe89:8f42  prefixlen 64  scopeid 0x20<link>
+        ether 00:0c:29:89:8f:42  txqueuelen 1000  (Ethernet)
+        RX packets 1568  bytes 610232 (595.9 KiB)
+        RX errors 0  dropped 92  overruns 0  frame 0
+        TX packets 256  bytes 29082 (28.4 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+```
+
+
+Terminalden `sudo nano /etc/network/interfaces` dosya yoluna gidip orada yapılandırmaları yapacağız.
+
+![image](https://github.com/ugurcomptech/Linux-Network-Config/assets/133202238/6bab18ed-cf94-44fc-a65b-11b44920ea96)
+
+
+Siz de içi boş şekilde gelecek alt satıra gelip aşağıda ki komutları yazacağız
+
+```
+# ens33
+auto ens33  # Ağ arabirimi otomatik olarak etkinleştirilir
+iface ens33 inet static  # Arayüz, statik IP yapılandırması kullanacak şekilde ayarlanır
+    address 192.168.1.170  # Arayüzün IP adresi
+    netmask 255.255.255.0  # Alt ağ maskesi
+    gateway 192.168.1.1  # Varsayılan Ağ Geçidi
+    dns-nameservers 8.8.8.8  # DNS Sunucuları
+```
+
+Bunu yaptıktan sorna terminalde 
+
+şu iki komuttan birini çalıştırabilirsiniz
+
+```
+sudo ifdown ens33 && sudo ifup ens33
+```
+
+```
+sudo systemctl restart networking.service # bunu kullanmanız önerilir
+```
+
+
+
+
+
+
+
+
+
+
+
